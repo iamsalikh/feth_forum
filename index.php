@@ -4,10 +4,10 @@ require 'function.php';
 $select = new Select();
 
 if(isset($_SESSION['id'])){
-    $user = $select->selectUserById($_SESSION['id']);
+    $user = $select->selectUserById($_SESSION['id']); // если пользователь уже ввошел
 }
 else{
-    header('Location: login.php');
+    header('Location: login.php'); // если пользователь не ввошел
 }
 ?>
 <!doctype html>

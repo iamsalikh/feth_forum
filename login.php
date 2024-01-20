@@ -2,19 +2,19 @@
 require 'function.php';
 
 if(isset($_SESSION['id'])){
-    header('Location: index.php');
+    header('Location: index.php'); // если пользователь уже ввошел, тогда имеет доступ к индекс странице
 }
 
 $login = new Login();
 
 if(isset($_POST['submit'])){
 //    var_dump($_POST['password']);
-    $result = $login->login($_POST['usernameemail'], $_POST['password']);
-
+    $result = $login->log1n($_POST['usernameemail'], $_POST['password']);
+    var_dump($result);
     if($result == 1){
-        $_SESSION['login'] = true;
+        $_SESSION['log1n'] = true;
         $_SESSION['id'] = $login->idUser();
-        header('Location: index.php');
+        header('Location: index.php');;
         exit();
     }
     elseif($result == 10){

@@ -23,9 +23,11 @@ class Register extends Connection{
             return 10;
         } else {
             if ($password == $confirmpassword) {
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $pepper = "salikh";
+                $pwd_peppered = hash_hmac("sha256", $password, $pepper);
+                $pwd_hashed = password_hash($pwd_peppered, PASSWORD_DEFAULT);
 
-                $query = "INSERT INTO tb_user VALUES('', '$name', '$username', '$email', '$hashedPassword')";
+                $query = "INSERT INTO tb_user VALUES('', '$name', '$username', '$email', '$pwd_hashed')";
                 mysqli_query($this->conn, $query);
 
                 return 1;
@@ -38,7 +40,7 @@ class Register extends Connection{
 
 class Login extends Connection{
     public $id;
-    public function login($usernameemail, $password) {
+    public function log1n($usernameemail, $password) {
         $result = mysqli_query($this->conn, "SELECT * FROM tb_user WHERE username = '$usernameemail' OR email = '$usernameemail'");
         $row = mysqli_fetch_assoc($result);
 
@@ -47,14 +49,27 @@ class Login extends Connection{
         if (mysqli_num_rows($result) > 0) {
             $storedPasswordHash = $row['password'];
 
-//            var_dump($storedPasswordHash);
+            $pepper = "salikh";
+            $pwd_peppered = hash_hmac("sha256", $password, $pepper);
 
-            if (password_verify($password, $storedPasswordHash)) {
-                $this->id = $row['id'];
+            if (password_verify($pwd_peppered, $storedPasswordHash)) {
+                echo "Password matches.";
+                $this->id=$row['id'];
                 return 1;
-            } else {
+            }
+            else {
+                echo "Password incorrect.";
                 return 10;
             }
+
+//            var_dump($password, $storedPasswordHash);
+//
+//            if (password_verify($password, $storedPasswordHash)) {
+//                $this->id = $row['id'];
+//                return 1;
+//            } else {
+//                return 10;
+//            }
         } else {
             return 100;
         }
@@ -71,29 +86,3 @@ class Select extends Connection{
         return mysqli_fetch_assoc($result);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
