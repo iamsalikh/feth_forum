@@ -8,9 +8,9 @@ if(isset($_SESSION['id'])){
 $login = new Login();
 
 if(isset($_POST['submit'])){
-    var_dump($_POST['password']);
+//    var_dump($_POST['password']);
     $result = $login->login($_POST['usernameemail'], $_POST['password']);
-    var_dump($result);
+//    var_dump($result);
 
     if($result == 1){
         $_SESSION['login'] = true;
