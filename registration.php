@@ -11,9 +11,10 @@ if(isset($_POST['submit'])){
     $result = $register->registration($_POST['name'], $_POST['username'], $_POST['email'], $_POST['password'], $_POST['confirmpassword']);
 
     if($result == 1){
-        echo
-        "<script> alert('Registration Successful'); </script>";
-        header('Location: index.php');
+        $_SESSION['registration'] = true;
+        $_SESSION['id'] = $register -> idUser();
+        header('Location: index.php');;
+        exit();
     }
     elseif($result == 10){
         echo
