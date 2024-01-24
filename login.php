@@ -2,7 +2,7 @@
 require 'function.php';
 
 if(isset($_SESSION['id'])){
-    header('Location: index.php'); // если пользователь уже ввошел, тогда имеет доступ к индекс странице
+    header('Location: index.php');
 }
 
 $login = new Login();

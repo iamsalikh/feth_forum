@@ -113,12 +113,12 @@ class Subject extends Connection{
 
     public function createSubject(){
         $query = "INSERT INTO tb_subject (subjectName, title, user_id) VALUES ('$this->subjectName', '$this->title', '$this->user_id')";
-        mysqli_query($this->conn, $query); // это у меня 118 линия которая вызывает ошибку
+        mysqli_query($this->conn, $query);
         $this->id = mysqli_insert_id($this->conn);
     }
 
     public function viewSubjects(){
-        $result = mysqli_query($this->conn, "SELECT * FROM tb_subject ORDER BY id DESC ");
+        $result = mysqli_query($this->conn, "SELECT * FROM tb_subject ORDER BY id DESC");
         $subjects = [];
         while($row = mysqli_fetch_assoc($result)){
             $subjects[] = $row;
@@ -131,17 +131,20 @@ class Subject extends Connection{
         return mysqli_fetch_assoc($result);
     }
 
-    public function addComment($userId, $content){
-        $query = "INSERT INTO tb_comment VALUES('', $this->id, $userId, $content, NOW())";
+    public function addComment($subjectId, $userId, $content){
+        $query = "INSERT INTO tb_comment (subject_id, user_id, content, timestamp) VALUES ('$subjectId', '$userId', '$content', NOW())";
         mysqli_query($this->conn, $query);
     }
 
-    public function viewComments(){
-        $result = mysqli_query($this->conn, "SELECT * FROM tb_comment");
+    public function viewCommentsBySubjectId($subjectId){
+        $subjectId = mysqli_real_escape_string($this->conn, $subjectId);
+        $query = "SELECT * FROM tb_comment WHERE subject_id = '$subjectId' ORDER BY id DESC";
+        $result = mysqli_query($this->conn, $query);
         $comments = [];
         while ($row = mysqli_fetch_assoc($result)){
             $comments[] = $row;
         }
         return $comments;
     }
+
 }

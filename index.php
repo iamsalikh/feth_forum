@@ -11,17 +11,18 @@ else{
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['new_subject'], $_POST['write_subject'], $_POST['add_subject'])) {
+    if (isset($_POST['subject_name'], $_POST['write_subject'], $_POST['add_username'])) {
 
-        $newSubject = new Subject($_POST['new_subject'], $_POST['write_subject'], $_SESSION['id']);
+        $newSubject = new Subject($_POST['subject_name'], $_POST['write_subject'], $_SESSION['id']);
         $newSubject->createSubject();
+
+        header('Location: index.php');
+//        exit();
     }
 }
 $subjectInstance = new Subject('something', 'something', 'something');
 
 $subjects = $subjectInstance->viewSubjects();
-
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -48,9 +49,9 @@ $subjects = $subjectInstance->viewSubjects();
     <div class="row justify-content-center">
         <div class="col-md-8">
             <form action="" method="post">
-                <input type="text" name="new_subject" placeholder="Add a new subject.." class="form-control" required>
+                <input type="text" name="subject_name" placeholder="Name of your subject" class="form-control" required>
                 <input type="text" name="write_subject" placeholder="Write your subject" class="form-control" required>
-                <input type="hidden" name="add_subject" value="1">
+                <input type="hidden" name="add_username" value="1">
                 <button type="submit" class="btn btn-success">Add</button>
             </form>
         </div>
@@ -74,10 +75,5 @@ $subjects = $subjectInstance->viewSubjects();
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    function redirectToSubject(subjectId) {
-        window.location.href = 'subject.php?id=' + subjectId;
-    }
-</script>
 </body>
 </html>
