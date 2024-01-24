@@ -13,6 +13,10 @@ class Connection
     public function __construct()
     {
         $this->conn = mysqli_connect($this->host, $this->user, $this->password, $this->dbname);
+
+        if (!$this->conn) {
+            die("Connection error: " . mysqli_connect_error());
+        }
     }
 }
 
@@ -50,8 +54,6 @@ class Login extends Connection{
         $result = mysqli_query($this->conn, "SELECT * FROM tb_user WHERE username = '$usernameemail' OR email = '$usernameemail'");
         $row = mysqli_fetch_assoc($result);
 
-//        var_dump($row);
-
         if (mysqli_num_rows($result) > 0) {
             $storedPasswordHash = $row['password'];
 
@@ -78,7 +80,68 @@ class Login extends Connection{
 
 class Select extends Connection{
     public function selectUserById($id){
-        $result = mysqli_query($this->conn, "SELECT * FROM tb_user WHERE id = $id");
+        $id = mysqli_real_escape_string($this->conn, $id);
+        $result = mysqli_query($this->conn, "SELECT * FROM tb_user WHERE id = '$id'");
         return mysqli_fetch_assoc($result);
+    }
+
+    public function getUsernameByUserId($userId) {
+        $userId = mysqli_real_escape_string($this->conn, $userId);
+        $result = mysqli_query($this->conn, "SELECT username FROM tb_user WHERE id = '$userId'");
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_assoc($result);
+            return $row['username'];
+        } else {
+            return false;
+        }
+    }
+}
+
+class Subject extends Connection{
+    public $id;
+    public $subjectName;
+    public $title;
+    public $user_id;
+
+    public function __construct($subjectName, $title, $user_id){
+        parent::__construct();
+        $this->subjectName = mysqli_real_escape_string($this->conn, $subjectName);
+        $this->title = mysqli_real_escape_string($this->conn, $title);
+        $this->user_id = mysqli_real_escape_string($this->conn, $user_id);
+    }
+
+    public function createSubject(){
+        $query = "INSERT INTO tb_subject (subjectName, title, user_id) VALUES ('$this->subjectName', '$this->title', '$this->user_id')";
+        mysqli_query($this->conn, $query); // это у меня 118 линия которая вызывает ошибку
+        $this->id = mysqli_insert_id($this->conn);
+    }
+
+    public function viewSubjects(){
+        $result = mysqli_query($this->conn, "SELECT * FROM tb_subject ORDER BY id DESC ");
+        $subjects = [];
+        while($row = mysqli_fetch_assoc($result)){
+            $subjects[] = $row;
+        }
+        return $subjects;
+    }
+
+    public function viewSubjectById($id){
+        $result = mysqli_query($this->conn, "SELECT * FROM tb_subject WHERE id = $id");
+        return mysqli_fetch_assoc($result);
+    }
+
+    public function addComment($userId, $content){
+        $query = "INSERT INTO tb_comment VALUES('', $this->id, $userId, $content, NOW())";
+        mysqli_query($this->conn, $query);
+    }
+
+    public function viewComments(){
+        $result = mysqli_query($this->conn, "SELECT * FROM tb_comment");
+        $comments = [];
+        while ($row = mysqli_fetch_assoc($result)){
+            $comments[] = $row;
+        }
+        return $comments;
     }
 }

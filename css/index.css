@@ -1,52 +1,96 @@
-body {
-    font-family: Arial, sans-serif;
+body, html {
+    height: 0;
     margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #76a7d9;
 }
 
-h1 {
-    text-align: left;
-    margin: 20px 20px 0 20px;
+.navbar {
+    background-color: #007bff;
+    padding: 1rem 1rem;
 }
 
-nav {
-    background-color: #3fd317;
-    overflow: hidden;
+.navbar-brand {
+    font-size: 1.75rem;
+    color: #fff;
 }
 
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+.navbar-nav .nav-link {
+    color: #fff;
 }
 
-nav li {
-    float: right;
+.navbar-nav .nav-link.active, .navbar-nav .nav-link:focus {
+    color: #90d5ec;
+    background-color: transparent;
+    border-bottom: 2px solid #fff;
 }
 
-nav a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
+.container {
+    padding: 2rem 0;
+}
+
+.form-control, .btn-success {
+    border-radius: 2rem;
+}
+
+.card-link {
+    color: inherit;
     text-decoration: none;
 }
 
-nav a:hover {
-    background-color: #ddd;
-    color: black;
+.card {
+    margin-bottom: 1rem;
+    border: none;
+    transition: transform .2s, box-shadow .2s;
+    border-radius: .5rem;
+    overflow: hidden;
 }
 
-.active {
-    background-color: #ff0099;
+.card:hover, .card:focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 2rem rgba(0,0,0,.15);
 }
 
-/* Clear floats after the list items */
-nav::after {
-    content: "";
-    clear: both;
-    display: table;
+.card-body {
+    padding: 1.25rem;
+    background-color: #fff;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: #007bff;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.text-muted {
+    font-size: .875rem;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    padding: .5rem 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: background-color .2s, border-color .2s;
+}
+
+.btn-success:hover, .btn-success:focus {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+input[type=text].form-control {
+    margin-bottom: 1rem;
+    box-shadow: none;
+}
+
+input[type=text].form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
 }
