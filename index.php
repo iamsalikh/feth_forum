@@ -8,6 +8,7 @@ if(isset($_SESSION['id'])){
 }
 else{
     header('Location: login.php');
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -17,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newSubject->createSubject();
 
         header('Location: index.php');
-//        exit();
+        exit();
     }
 }
 $subjectInstance = new Subject('something', 'something', 'something');
